@@ -19,6 +19,9 @@ lens = LogicalLens(lens=f)  # Wrapper around logical lens to add functionality.
 assert lens(x1)(p1) <= lens(x1)(p2)  # Recall that False <= True
 
 
+# Compute Logical Distances.
+A = lens.adj_matrix(data=[x1, x2, x3, x4])
+
 Y = lens.project(
     indices=[(0, 1), (1, 0.3)],  # points on hyperfaces of hypercube not connected to the origin.
                                  # Resulting lines intersects the boundary of the hyperbox at the 
@@ -31,7 +34,4 @@ Y = lens.project(
 )
 
 Y2 = lens.random_project(data=[x1, x2], n=10)  # Project onto 10 random lines.
-
-# Compute Logical Distances.
-A = logical_lens.adj_matrix(data=[x1, x2, x3, x4], lens=lens)
 ```
