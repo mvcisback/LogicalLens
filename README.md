@@ -23,6 +23,7 @@ Y = lens.project(
     indices=[(0, 1), (1, 0.3)],  # points on hyperfaces of hypercube not connected to the origin.
                                  # Resulting lines intersects the boundary of the hyperbox at the 
                                  # origin and at the indicies.
+                                 # Will raise exception if point on boundary is not valid.
     data=[x1, x2],  # Iterable of data
     as_percent=True  # Return number between 0 and 1 giving where on linear interpolation 
                      # between 0 and index intersection occurs. If false, give point on line.
