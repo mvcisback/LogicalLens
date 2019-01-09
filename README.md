@@ -30,6 +30,8 @@ Y = lens.project(
                      # Default is true
 )
 
+Y2 = lens.random_project(data=[x1, x2], n=10)  # Project onto 10 random lines.
+
 # Compute Logical Distances.
 A = logical_lens.adj_matrix(data=[x1, x2, x3, x4], lens=lens)
 ```
