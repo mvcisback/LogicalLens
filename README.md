@@ -20,7 +20,10 @@ assert lens(x1)(p1) <= lens(x1)(p2)  # Recall that False <= True
 
 
 # Compute Logical Distances.
+d = lens.dist(x1, x2)
 A = lens.adj_matrix(data=[x1, x2, x3, x4])
+
+# Find points on boundaries for coarse estimates.
 
 Y = lens.project(
     indices=[(0, 1), (1, 0.3)],  # points on hyperfaces of hypercube not connected to the origin.
