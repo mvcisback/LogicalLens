@@ -40,8 +40,12 @@ properties over time-series and can be installed with:
 
 ## Usage
 
-We begin by defining a family of properties we are
-interested in testing. TODO: define using toy car data.
+We begin by defining a dataset. Here we focus on some toy "car speeds"
+with the goal of detecting traffic "slow downs" (see below). While a
+bit contrived, this example will illustrate the common workflow of
+this library.
+
+![Car Speeds](assets/example_carspeeds.png)
 
 To get started, bring the `LogicalLens` class into scope.
 ```python
