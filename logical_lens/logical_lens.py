@@ -36,9 +36,11 @@ class LogicalLens:
 
         return A
 
-    def _projector(self, point_or_order, *, lexicographic=False, tol=1e-4):
+    def _projector(self, point_or_order, *, 
+                   lexicographic=False, tol=1e-4, percent=True):
         assert len(point_or_order) == self.n
-        percent = not lexicographic
+        if lexicographic:
+            percent = False
 
         def project(d):
             res = self.boundary(d).project(

@@ -199,7 +199,7 @@ X = X[intersects]
 model = GaussianMixture(5)
 model.fit(X)
 
-labeled_data = np.array([model.predict(x.reshape(1,2))[0] for x in X])
+labels = np.array([model.predict(x.reshape(1,2))[0] for x in X])
 ```
 
 <figure>
@@ -226,8 +226,28 @@ We can see that the distances cluster near 0.35. Annotating the
 cluster with how far from the toy data gives a classifer "slow down"
 as the data less than 0.45 distance away from the reference slowdown
 under our logical lens in cluster 4.
+
 <figure>
   <img src="https://mjvc.me/RV2018/imgs/annotated_cluster4.pdf.png"
   alt="gmm" width=500px>
 </figure>
 
+We can recover a specification by seeing the range of parameters
+this group takes.
+
+```python
+slow_downs = ..  # data identified as slow downs
+
+f1 = lens.projector([(0.5, 1)], percent=False)
+f2 = lens.projector([(1, 0.2)], percent=False)
+X1 = np.vstack([f1(d) for d in slow_downs])
+X2 = np.vstack([f2(d) for d in slow_downs])
+
+h_min, h_max = X1.max(axis=0), X1.min(axis=0)
+tau_min, tau_max = X2.max(axis=0), X2.min(axis=0)
+```
+
+<figure>
+  <img src="assets/formula.png"
+  alt="gmm" width=500px>
+</figure>
