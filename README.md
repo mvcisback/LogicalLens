@@ -94,41 +94,77 @@ from logical_lens import LogicalLens
 lens = LogicalLens(lens=slow_down_lens)
 ```
 
-Under this lens, the time series become threshold surfaces in the
-2-d unit box.
+Under this lens, the time series become threshold surfaces in the 2-d
+unit box (see fig below). If needed, these threshold boundaries can be
+approximated as a series of rectangles. Example code to compute the
+rectangles is given below.
+
+```python
+recs = lens.boundary(data[5], approx=True, tol=1e-4)  # List of rectangles
+```
 
 <figure>
   <img src="https://mjvc.me/RV2018/imgs/toy_highway1.svg" 
   alt="car speeds under lens" width=900px>
 </figure>
 
-We can now compute the induced "Logical Distance"
+In practice, one typically need not work with
+the threshold boundaries directly. For example,
+one may wish to compute the induced "Logical Distance"
 (hausdorff distance of boundaries) between datum.
 ```python
 # Compute Logical Distances.
 d = lens.dist(data[0], data[1])
 A = lens.adj_matrix(data=data)  # Compute full adjacency matrix.
+```
+
+<figure>
+  <img src="https://mjvc.me/RV2018/imgs/toy_highway2.svg" 
+  alt="car speeds under lens" width=900px>
+</figure>
+
+As pointed out in the reference papers, the logical distance is in
+general quite slow to compute. Often, it is advantageous to use a
+coarse characterization and then refine this characterization as
+needed. For example, consider computing the unique intersection of a
+line from the origin and the threshold surfaces. If two boundaries
+are close together, then they need have similar intersection points.
+We show below how to do this using `logical_lens`. Note that
+instead of the intersection point, we return how far along the
+line `[0, 1]` the intersection occurs.
+
+<figure>
+  <img src="https://mjvc.me/RV2018/imgs/quacks_looks_joke14.svg" 
+  alt="car speeds under lens" width=900px>
+</figure>
 
 ```python
+points = [
+    (0, 1),   # Reference line intersecting origin and (0, 1)
+    (1, 0.3)  # ..                                     (1, 0.3)
+]
+f = lens.projector(points)
+Y = [f(d) for d in data]
+```
 
-# Find points on boundaries for coarse estimates.
+Because one cannot know where to project a-priori, we support
+generating a projector on `n` random lines.
 
-## Find intersection of threshold surface and
-## the lines intersecting the origin and the points
-## provided.
-f = lens.projector([(0, 1), (1, 0.3)])
-Y = map(f, [x1, x2])
+```python
+## Project onto 2 random lines.
+f2 = lens.random_projector(2)
+```
 
-## Project onto 10 random lines.
-f2 = lens.random_projector(10)
+For example, we project onto two lines 
 
+We also support finding the point on the threshold boundaries
+according to some lexicographic ordering (see Vazquez-Chanlatte, el
+al, CAV 2018).
+
+```python
 ## Project using lexicographic ordering of parameters:
 f3 = lens.lex_projector(orders=[
    [(1, False), (0, True)],  # minimizing on axis 1 then maximizing on axis 0.
    [(0, False), (1, False)],  # minimizing on axis 0 then minimizing on axis 1.
 ])
-
 ```
-
-TODO: rewrite for LogicalLens:
-Example notebook used in RV2018 submission: https://gist.github.com/mvcisback/e339530f90a380ad1b36ed4e2291c988
