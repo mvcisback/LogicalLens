@@ -31,25 +31,35 @@ class LogicalLens:
         n = len(data)
         A = np.zeros((n, n))
         for i, j in combinations(range(n), 2):
-            A[i, j] = self.dist(data1, data2)
+            A[i, j] = self.dist(data[i], data[j]).center
             A[j, i] = A[i, j]
 
         return A
 
-    def _projector(self, point_or_order, lexicographic=False, tol=1e-4):
+    def _projector(self, point_or_order, *, lexicographic=False, tol=1e-4):
         assert len(point_or_order) == self.n
-        return lambda d: self.boundary(d).project(
-            point_or_order, tol=tol, lexicographic=lexicographic)
+        percent = not lexicographic
+
+        def project(d):
+            res = self.boundary(d).project(
+                point_or_order, tol=tol,
+                lexicographic=lexicographic, percent=percent
+            )
+            return res.center if lexicographic else res
+
+        return project
 
     def _random_projector(self):
-        return self.projector(np.random.uniform(0, 1, self.n))
+        xs = np.random.uniform(0, 1, self.n)
+        ys = np.random.uniform(0, 1, self.n)
+        return self.projector(tuple(zip(xs, ys)))
 
     def projector(self, points, tol=1e-4):
-        return fn.ljuxt(*(self._projector(p, tol) for p in points))
+        return fn.ljuxt(*(self._projector(p, tol=tol) for p in points))
 
     def random_projector(self, n):
         return fn.ljuxt(*(self._random_projector() for _ in range(n)))
 
-    def lex_projectors(self, orders):
-        fs = (self._projector(o, tol, lexicographic=True) for o in orders)
+    def lex_projector(self, orders, tol=1e-4):
+        fs = (self._projector(o, tol=tol, lexicographic=True) for o in orders)
         return fn.ljuxt(*fs)
