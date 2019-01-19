@@ -2,8 +2,31 @@
 
 A "logical lens" is a map: `f : Data -> ([0, 1]^n -> bool)` and is
 interpreted as a family of properties over the hyper unit box, `[0,
-1]^n`, indexed by "`Data`". In principle, `Data` can be anything from
-time-series to pictures of dogs.
+1]^n`, indexed by "`Data`". Further, `f` must be monotonic threshold
+function. That is, given a fixed data `data`, the map `g = f(data)` is
+such that for any two points in the unit box, `x, y in [0, 1]^n` if `x
+<= y` coordinate-wise, then `g(x) <= g(y)` , where `False <= True`. An
+example is given below (see
+[monotone-bipartition](https://github.com/mvcisback/monotone-bipartition)
+for details):
+
+<figure>
+  <img src="assets/bipartition.svg" alt="mbp logo" width=300px>
+  <figcaption>
+     Compute Monotone Threshold Surfaces and compute distances between surfaces.
+  </figcaption>
+</figure>
+
+In principle, `Data` can be anything from time-series to pictures of
+dogs. The key idea is that a logical lens using embedding
+domain specific knowledge in the form of property tests
+to design features and similarity measures.
+
+For details on this formalism, see the following two papers:
+
+1. [Vazquez-Chanlatte, Marcell, et al."Time Series Learning using Monotonic Logical Properties.", International Conference on Runtime Verification, RV, 2018](https://mjvc.me/papers/rv2018_logical_ts_learning.pdf)
+
+1. [Vazquez-Chanlatte, Marcell, et al. "Logical Clustering and Learning for Time-Series Data." International Conference on Computer Aided Verification. Springer, Cham, 2017.](https://mjvc.me/papers/cav2017.pdf)
 
 In this readme, for demonstration purposes, we will be using the
 `metric-temporal-logic` package. This package provides parametric
