@@ -1,0 +1,7 @@
+ language: python
+ python:
+   - "3.6"
+ install: "pip install -r requirements.txt"
+ script: pytest --flake8 --cov=logical_lens --cov-report=html
+after_success:
+  - codecov

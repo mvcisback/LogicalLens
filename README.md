@@ -1,3 +1,10 @@
+[![Build Status](https://travis-ci.org/mvcisback/LogicalLens.svg?branch=master)](https://travis-ci.org/mvcisback/LogicalLens)
+[![codecov](https://codecov.io/gh/mvcisback/LogicalLens/branch/master/graph/badge.svg)](https://codecov.io/gh/mvcisback/LogicalLens)
+[![Updates](https://pyup.io/repos/github/mvcisback/LogicalLens/shield.svg)](https://pyup.io/repos/github/mvcisback/LogicalLens/)
+
+[![PyPI version](https://badge.fury.io/py/LogicalLens.svg)](https://badge.fury.io/py/LogicalLens)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # LogicalLens
 
 A "logical lens" is a map: `f : Data -> ([0, 1]^n -> bool)` and is
