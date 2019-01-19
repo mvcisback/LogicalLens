@@ -38,6 +38,12 @@ properties over time-series and can be installed with:
 
 > $ pip install metric-temporal-logic
 
+## Usage
+
+We begin by defining a family of properties we are
+interested in testing. TODO: define using toy car data.
+
+To get started, bring the `LogicalLens` class into scope.
 ```python
 from logical_lens import LogicalLens
 
