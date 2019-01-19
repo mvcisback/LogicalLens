@@ -99,7 +99,7 @@ Under this lens, the time series become threshold surfaces in the
 
 <figure>
   <img src="https://mjvc.me/RV2018/imgs/toy_highway1.svg" 
-  alt="car speeds under lens" width=500px>
+  alt="car speeds under lens" width=900px>
 </figure>
 
 We can now compute the induced "Logical Distance"
