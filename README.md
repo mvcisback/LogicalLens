@@ -19,7 +19,7 @@ dogs. The key idea is that a logical lens using embedding
 domain specific knowledge in the form of property tests
 to design features and similarity measures.
 
-For details on this formalism, see the following two papers:
+For details on this formalism, see the following two papers or [this slide deck](https://mjvc.me/RV2018/):
 
 1. [Vazquez-Chanlatte, Marcell, et al."Time Series Learning using Monotonic Logical Properties.", International Conference on Runtime Verification, RV, 2018](https://mjvc.me/papers/rv2018_logical_ts_learning.pdf)
 
