@@ -11,6 +11,8 @@ setup(
     install_requires=[
         'attrs',
         'funcy',
+        'monotone-bipartition',
+        'numpy',
     ],
     packages=find_packages(),
 )
