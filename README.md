@@ -32,14 +32,9 @@ For details on this formalism, see the following two papers or [this slide deck]
 
 1. [Vazquez-Chanlatte, Marcell, et al. "Logical Clustering and Learning for Time-Series Data." International Conference on Computer Aided Verification. Springer, Cham, 2017.](https://mjvc.me/papers/cav2017.pdf)
 
-In this readme, for demonstration purposes, we will be using the
-`metric-temporal-logic` package. This package provides parametric
-properties over time-series and can be installed with:
+# Usage
 
-> $ pip install metric-temporal-logic
-
-## Usage
-
+## Example Dataset
 We begin by defining a dataset. Here we focus on some toy "car speeds"
 with the goal of detecting traffic "slow downs" (see below). While a
 bit contrived, this example will illustrate the common workflow of
@@ -60,29 +55,61 @@ print(data[5])  # [(0, 0.1)]
 
 Code for loading the data is given in `example/toy_car_speeds/load.py`.
 
-To get started, bring the `LogicalLens` class into scope.
+## Example Specification
+
+We can now define a monotonic parametric properties we are interested
+in testing. To continue our example, let us test if the car's speed is
+remains below some value `h` after time `tau`.
+
+```python
+def slow_down_lens(h, tau):
+    tau *= 20
+    return lambda data: all(speed < h for t, speed in data if t >= tau)
+```
+
+Since we require each parameter to be between `0` and `1`, we rescale
+`tau` to be between `0` and `20` internally. Further, because the
+car's speed is already normalized between `0` and `1`, `h` does not
+need to change.
+
+Finally, before moving on, notice that `slow_down_lens` is indeed
+monotonic since increasing `h` and `tau` both make the property easier
+to satisfy.
+
+### Aside
+For more complicated specifications using temporal logic, we recommend
+using the
+[metric-temporal-logic](https://github.com/mvcisback/py-metric-temporal-logic)
+library.
+
+## Example Usage
+
+We are finally ready to use the `logical_lens` library.  We begin by
+bringing the `LogicalLens` class into scope.  This class wraps a
+mathematical logical lens into an easy to use object.
+
 ```python
 from logical_lens import LogicalLens
 
-x1 = .. # some arbitrary data object.
-x2 = ..
+lens = LogicalLens(lens=slow_down_lens)
+```
 
-# Define some logical lens. TODO
-f = ..  # Data -> (Point -> bool)
-lens = LogicalLens(lens=f)  # Wrapper around logical lens to add functionality.
-                            # Is still callable, e.g., lens(x1) == f(x1)
+Under this lens, the time series become threshold surfaces in the
+2-d unit box.
 
-p1 = (0.1, 0.1)  # Point in [0, 1]^2
-p2 = (0.2, 0.3)  # Point in [0, 1]^2
+<figure>
+  <img src="https://mjvc.me/RV2018/imgs/toy_highway1.svg" 
+  alt="car speeds under lens" width=500px>
+</figure>
 
-
-# Note: forall all data, x, lens(x) must be a monotone threshold function.
-assert lens(x1)(p1) <= lens(x1)(p2)  # Where in python, False <= True.
-
-
+We can now compute the induced "Logical Distance"
+(hausdorff distance of boundaries) between datum.
+```python
 # Compute Logical Distances.
-d = lens.dist(x1, x2)
-A = lens.adj_matrix(data=[x1, x2, x3, x4])
+d = lens.dist(data[0], data[1])
+A = lens.adj_matrix(data=data)  # Compute full adjacency matrix.
+
+```python
 
 # Find points on boundaries for coarse estimates.
 
