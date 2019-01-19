@@ -2,7 +2,7 @@
 
 A "logical lens" is a map: `f : Data -> ([0, 1]^n -> bool)` and is
 interpreted as a family of properties over the hyper unit box, `[0,
-1]^n`, indexed by "`Data`". Further, `f` must be monotonic threshold
+1]^n`, indexed by "`Data`". Further, `f(data)` must be monotonic threshold
 function. That is, given a fixed data `data`, the map `g = f(data)` is
 such that for any two points in the unit box, `x, y in [0, 1]^n` if `x
 <= y` coordinate-wise, then `g(x) <= g(y)` , where `False <= True`. An
