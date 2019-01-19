@@ -12,9 +12,6 @@ for details):
 
 <figure>
   <img src="assets/bipartition.svg" alt="mbp logo" width=300px>
-  <figcaption>
-     Compute Monotone Threshold Surfaces and compute distances between surfaces.
-  </figcaption>
 </figure>
 
 In principle, `Data` can be anything from time-series to pictures of
