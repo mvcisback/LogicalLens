@@ -23,7 +23,7 @@ for details):
 </figure>
 
 In principle, `Data` can be anything from time-series to pictures of
-dogs. The key idea is that a logical lens using embedding
+dogs. The key idea is that a logical lens enables leveraging
 domain specific knowledge in the form of property tests
 to design features and similarity measures.
 
