@@ -120,7 +120,7 @@ A = lens.adj_matrix(data=data)  # Compute full adjacency matrix.
 
 <figure>
   <img src="https://mjvc.me/RV2018/imgs/toy_highway2.svg" 
-  alt="car speeds under lens" width=900px>
+  alt="car speeds under lens (adj matrix)" width=900px>
 </figure>
 
 As pointed out in the reference papers, the logical distance is in
@@ -135,7 +135,7 @@ line `[0, 1]` the intersection occurs.
 
 <figure>
   <img src="https://mjvc.me/RV2018/imgs/quacks_looks_joke14.svg" 
-  alt="car speeds under lens" width=900px>
+  alt="example intersections" width=500px>
 </figure>
 
 ```python
@@ -143,7 +143,8 @@ points = [
     (0, 1),   # Reference line intersecting origin and (0, 1)
     (1, 0.3)  # ..                                     (1, 0.3)
 ]
-f = lens.projector(points)
+f = lens.projector(points)  # Note, will project to -1 or 2 if no intersection
+                            # is found.
 Y = [f(d) for d in data]
 ```
 
@@ -155,11 +156,9 @@ generating a projector on `n` random lines.
 f2 = lens.random_projector(2)
 ```
 
-For example, we project onto two lines 
-
 We also support finding the point on the threshold boundaries
 according to some lexicographic ordering (see Vazquez-Chanlatte, el
-al, CAV 2018).
+al, CAV 2017).
 
 ```python
 ## Project using lexicographic ordering of parameters:
@@ -168,3 +167,67 @@ f3 = lens.lex_projector(orders=[
    [(0, False), (1, False)],  # minimizing on axis 0 then minimizing on axis 1.
 ])
 ```
+
+## Using with Scikit learn
+Finally, we give an example of how to use this tool with scikit learn.
+
+```python
+import numpy as np
+from sklearn.mixture import GaussianMixture
+```
+
+Suppose we have much more time-series:
+<figure>
+  <img src="https://mjvc.me/RV2018/imgs/real_ts_1000.pdf.png"
+  alt="example time series" width=500px>
+</figure>
+
+We start by computing a course classification of the time series by
+projecting onto two random lines and then learning a Gaussian Mixture
+Model to find clusters.
+
+```python
+# Project data down to two dimensinos.
+f = lens.projector([(0.5, 1), (1, 0.2)])
+X = np.vstack([f(d) for d in data])  # collect projected data into a matrix.
+
+# Throw out data that had no intersections (and thus no slow downs).
+intersects = (data != 2).T[0] * (data != 2).T[1]
+X = X[intersects]
+
+# Learn a guassian mixture model
+model = GaussianMixture(5)
+model.fit(X)
+
+labeled_data = np.array([model.predict(x.reshape(1,2))[0] for x in X])
+```
+
+<figure>
+  <img src="https://mjvc.me/RV2018/imgs/gmm.svg.png"
+  alt="gmm" width=400px>
+</figure>
+
+By checking which cluster the 0 toy time series belongs to, we
+identify cluster 4 as potential slow down. We can then compute
+the logical distance of each datum in cluster 4 to the toy data.
+
+```python
+ref = .. # toy_data[0]
+
+dists = [lens.dist(ref, d) for d in data]
+```
+
+<figure>
+  <img src="https://mjvc.me/RV2018/imgs/c4_dist_dist.png"
+  alt="gmm" width=500px>
+</figure>
+
+We can see that the distances cluster near 0.35. Annotating the
+cluster with how far from the toy data gives a classifer "slow down"
+as the data less than 0.45 distance away from the reference slowdown
+under our logical lens in cluster 4.
+<figure>
+  <img src="https://mjvc.me/RV2018/imgs/annotated_cluster4.pdf.png"
+  alt="gmm" width=500px>
+</figure>
+
