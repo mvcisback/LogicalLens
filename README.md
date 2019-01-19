@@ -49,6 +49,17 @@ this library.
   <img src="assets/example_carspeeds.png" alt="car speeds" width=500px>
 </figure>
 
+This dataset is provided in `example_data/toy_car_speeds`. Below, we
+assume that `data` is a list of the 6 *piece-wise constant* time
+series, where each element is a sequence of `(timestamp, value)`
+pairs. For example,
+
+```python
+print(data[5])  # [(0, 0.1)]
+```
+
+Code for loading the data is given in `example/toy_car_speeds/load.py`.
+
 To get started, bring the `LogicalLens` class into scope.
 ```python
 from logical_lens import LogicalLens
