@@ -45,7 +45,9 @@ with the goal of detecting traffic "slow downs" (see below). While a
 bit contrived, this example will illustrate the common workflow of
 this library.
 
-![Car Speeds](assets/example_carspeeds.png)
+<figure>
+  <img src="assets/example_carspeeds.png" alt="car speeds" width=500px>
+</figure>
 
 To get started, bring the `LogicalLens` class into scope.
 ```python
