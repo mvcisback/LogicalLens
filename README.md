@@ -232,8 +232,9 @@ under our logical lens in cluster 4.
   alt="gmm" width=500px>
 </figure>
 
-We can recover a specification by seeing the range of parameters
-this group takes.
+To extract a specification for the learned cluster, one can use the
+technique described in (Vazquez-Chanlatte et al, CAV 2017). We begin
+by seeing the range of parameters the slow downs take.
 
 ```python
 slow_downs = ..  # data identified as slow downs
@@ -243,9 +244,13 @@ f2 = lens.projector([(1, 0.2)], percent=False)
 X1 = np.vstack([f1(d) for d in slow_downs])
 X2 = np.vstack([f2(d) for d in slow_downs])
 
-h_min, h_max = X1.max(axis=0), X1.min(axis=0)
-tau_min, tau_max = X2.max(axis=0), X2.min(axis=0)
+box1 = X1.min(axis=0), X1.max(axis=0)  # (0.25, 0.55), (0.38, 0.76)
+box2 = X2.min(axis=0), X2.max(axis=0)  # (0.35, 0.17), (0.62, 0.31)
 ```
+
+Each box above is implicilty defined a tuple of the point closest to
+the origin and the on farthest from the origin. The corresponding
+specification, (given here in Signal Temporal Logic) is:
 
 <figure>
   <img src="assets/formula.png"
