@@ -4,6 +4,7 @@
 
 [![PyPI version](https://badge.fury.io/py/logical-lens.svg)](https://badge.fury.io/py/logical-lens)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://zenodo.org/badge/164511235.svg)](https://zenodo.org/badge/latestdoi/164511235)
 
 # LogicalLens
 
