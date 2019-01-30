@@ -1,5 +1,6 @@
 from itertools import combinations
 from typing import Mapping, Sequence, TypeVar
+from pathos.multiprocessing import ProcessingPool as Pool
 
 import attr
 import funcy as fn
@@ -51,6 +52,25 @@ class LogicalLens:
 
         return project
 
+    def _parallel_projector(self, point_or_order, *,
+                   lexicographic=False, tol=1e-4, percent=True):
+        assert len(point_or_order) == self.n
+        if lexicographic:
+            percent = False
+
+        def serial_project(d):
+            res = self.boundary(d).project(
+                point_or_order, tol=tol,
+                lexicographic=lexicographic, percent=percent
+            )
+            return res.center if lexicographic else res
+
+        def parallel_project(d):
+            with Pool(processes=2) as pool:
+                return pool.map(serial_project, d)
+
+        return parallel_project
+
     def _random_projector(self):
         xs = np.random.uniform(0, 1, self.n)
         ys = np.random.uniform(0, 1, self.n)
@@ -58,6 +78,9 @@ class LogicalLens:
 
     def projector(self, points, tol=1e-4):
         return fn.ljuxt(*(self._projector(p, tol=tol) for p in points))
+
+    def parallel_projector(self, points, tol=1e-4):
+        return fn.ljuxt(*(self._parallel_projector(p, tol=tol) for p in points))
 
     def random_projector(self, n):
         return fn.ljuxt(*(self._random_projector() for _ in range(n)))

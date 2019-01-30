@@ -1,5 +1,6 @@
 from logical_lens import LogicalLens
 
+import numpy as np
 
 def line_lens(a):
     return lambda x: x[0] + x[1] >= a
@@ -34,6 +35,25 @@ def test_projector():
     lens = LogicalLens(2, line_lens)
     f = lens.projector([(0.5, 0.5), (1, 0)])
     x, y = f(0.5)
+    assert abs(x - 0.25) < 1e-3
+    assert abs(y - 0.5) < 1e-3
+
+
+def test_parallel_projector():
+    lens = LogicalLens(2, line_lens)
+    f = lens.parallel_projector([(0.5, 0.5), (1, 0)])
+    x, y = f(10_000*[0.5])
+    x = np.array(x)
+    y = np.array(y)
+    assert (abs(x - 0.25)).max() < 1e-3
+    assert (abs(y - 0.5)).max() < 1e-3
+
+
+def test_serial_projector():
+    lens = LogicalLens(2, line_lens)
+    f = lens.projector([(0.5, 0.5), (1, 0)])
+    for i in range(10_000):
+        x, y = f(0.5)
     assert abs(x - 0.25) < 1e-3
     assert abs(y - 0.5) < 1e-3
 
