@@ -52,24 +52,17 @@ class LogicalLens:
 
         return project
 
+
     def _parallel_projector(self, point_or_order, *,
                    lexicographic=False, tol=1e-4, percent=True):
-        assert len(point_or_order) == self.n
-        if lexicographic:
-            percent = False
-
-        def serial_project(d):
-            res = self.boundary(d).project(
-                point_or_order, tol=tol,
-                lexicographic=lexicographic, percent=percent
-            )
-            return res.center if lexicographic else res
-
+        projector = self._projector(point_or_order, lexicographic=lexicographic,
+                                    tol=tol, percent=percent)
         def parallel_project(d):
-            with Pool(processes=2) as pool:
-                return pool.map(serial_project, d)
+            with Pool() as pool:
+                return pool.map(projector, d)
 
         return parallel_project
+
 
     def _random_projector(self):
         xs = np.random.uniform(0, 1, self.n)

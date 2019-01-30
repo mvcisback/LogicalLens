@@ -42,20 +42,9 @@ def test_projector():
 def test_parallel_projector():
     lens = LogicalLens(2, line_lens)
     f = lens.parallel_projector([(0.5, 0.5), (1, 0)])
-    x, y = f(10_000*[0.5])
-    x = np.array(x)
-    y = np.array(y)
+    x, y = map(np.array, f(100*[0.5]))
     assert (abs(x - 0.25)).max() < 1e-3
     assert (abs(y - 0.5)).max() < 1e-3
-
-
-def test_serial_projector():
-    lens = LogicalLens(2, line_lens)
-    f = lens.projector([(0.5, 0.5), (1, 0)])
-    for i in range(10_000):
-        x, y = f(0.5)
-    assert abs(x - 0.25) < 1e-3
-    assert abs(y - 0.5) < 1e-3
 
 
 def test_rand_projector_smoke():
