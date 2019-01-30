@@ -52,17 +52,20 @@ class LogicalLens:
 
         return project
 
-
     def _parallel_projector(self, point_or_order, *,
-                   lexicographic=False, tol=1e-4, percent=True):
-        projector = self._projector(point_or_order, lexicographic=lexicographic,
-                                    tol=tol, percent=percent)
+                            lexicographic=False, tol=1e-4, percent=True):
+        projector = self._projector(
+            point_or_order,
+            lexicographic=lexicographic,
+            tol=tol,
+            percent=percent
+        )
+
         def parallel_project(d):
             with Pool() as pool:
                 return pool.map(projector, d)
 
         return parallel_project
-
 
     def _random_projector(self):
         xs = np.random.uniform(0, 1, self.n)
@@ -73,7 +76,9 @@ class LogicalLens:
         return fn.ljuxt(*(self._projector(p, tol=tol) for p in points))
 
     def parallel_projector(self, points, tol=1e-4):
-        return fn.ljuxt(*(self._parallel_projector(p, tol=tol) for p in points))
+        return fn.ljuxt(
+            *(self._parallel_projector(p, tol=tol) for p in points)
+        )
 
     def random_projector(self, n):
         return fn.ljuxt(*(self._random_projector() for _ in range(n)))

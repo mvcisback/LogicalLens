@@ -2,6 +2,7 @@ from logical_lens import LogicalLens
 
 import numpy as np
 
+
 def line_lens(a):
     return lambda x: x[0] + x[1] >= a
 
