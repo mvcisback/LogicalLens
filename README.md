@@ -2,8 +2,9 @@
 [![codecov](https://codecov.io/gh/mvcisback/LogicalLens/branch/master/graph/badge.svg)](https://codecov.io/gh/mvcisback/LogicalLens)
 [![Updates](https://pyup.io/repos/github/mvcisback/LogicalLens/shield.svg)](https://pyup.io/repos/github/mvcisback/LogicalLens/)
 
-[![PyPI version](https://badge.fury.io/py/LogicalLens.svg)](https://badge.fury.io/py/LogicalLens)
+[![PyPI version](https://badge.fury.io/py/logical-lens.svg)](https://badge.fury.io/py/logical-lens)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![DOI](https://zenodo.org/badge/164511235.svg)](https://zenodo.org/badge/latestdoi/164511235)
 
 # LogicalLens
 
@@ -22,7 +23,7 @@ for details):
 </figure>
 
 In principle, `Data` can be anything from time-series to pictures of
-dogs. The key idea is that a logical lens using embedding
+dogs. The key idea is that a logical lens enables leveraging
 domain specific knowledge in the form of property tests
 to design features and similarity measures.
 
@@ -58,7 +59,7 @@ Code for loading the data is given in `example/toy_car_speeds/load.py`.
 ## Example Specification
 
 We can now define a monotonic parametric properties we are interested
-in testing. To continue our example, let us test if the car's speed is
+in testing. To continue our example, let us test if the car's speed
 remains below some value `h` after time `tau`.
 
 ```python
@@ -111,7 +112,7 @@ recs = lens.boundary(data[5], approx=True, tol=1e-4)  # List of rectangles
 In practice, one typically need not work with
 the threshold boundaries directly. For example,
 one may wish to compute the induced "Logical Distance"
-(hausdorff distance of boundaries) between datum.
+(hausdorff distance of boundaries) between data.
 ```python
 # Compute Logical Distances.
 d = lens.dist(data[0], data[1])
@@ -128,7 +129,7 @@ general quite slow to compute. Often, it is advantageous to use a
 coarse characterization and then refine this characterization as
 needed. For example, consider computing the unique intersection of a
 line from the origin and the threshold surfaces. If two boundaries
-are close together, then they need have similar intersection points.
+are close together, then they need to have similar intersection points.
 We show below how to do this using `logical_lens`. Note that
 instead of the intersection point, we return how far along the
 line `[0, 1]` the intersection occurs.
@@ -182,7 +183,7 @@ Suppose we have much more time-series:
   alt="example time series" width=500px>
 </figure>
 
-We start by computing a course classification of the time series by
+We start by computing a coarse classification of the time series by
 projecting onto two random lines and then learning a Gaussian Mixture
 Model to find clusters.
 
