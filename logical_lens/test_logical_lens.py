@@ -1,5 +1,7 @@
 from logical_lens import LogicalLens
 
+import numpy as np
+
 
 def line_lens(a):
     return lambda x: x[0] + x[1] >= a
@@ -36,6 +38,14 @@ def test_projector():
     x, y = f(0.5)
     assert abs(x - 0.25) < 1e-3
     assert abs(y - 0.5) < 1e-3
+
+
+def test_parallel_projector():
+    lens = LogicalLens(2, line_lens)
+    f = lens.parallel_projector([(0.5, 0.5), (1, 0)])
+    x, y = map(np.array, f(100*[0.5]))
+    assert (abs(x - 0.25)).max() < 1e-3
+    assert (abs(y - 0.5)).max() < 1e-3
 
 
 def test_rand_projector_smoke():
