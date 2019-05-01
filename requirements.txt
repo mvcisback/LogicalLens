@@ -3,7 +3,7 @@ codecov==2.0.15
 funcy==1.12
 metric-temporal-logic==0.1.2
 monotone-bipartition==0.2.0
-numpy==1.16.0
+numpy==1.16.3
 pathos==0.2.2.1
 pytest==4.2.0
 pytest-cov==2.6.1
