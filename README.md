@@ -64,7 +64,8 @@ remains below some value `h` after time `tau`.
 
 ```python
 def slow_down_lens(data):
-    def spec(h, tau):
+    def spec(params):
+        h, tau = params
         tau *= 20
         return all(speed < h for t, speed in data if t >= tau)
     return spec
