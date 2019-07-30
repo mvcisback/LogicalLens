@@ -92,7 +92,7 @@ mathematical logical lens into an easy to use object.
 ```python
 from logical_lens import LogicalLens
 
-lens = LogicalLens(lens=slow_down_lens)
+lens = LogicalLens(n=2, lens=slow_down_lens)
 ```
 
 Under this lens, the time series become threshold surfaces in the 2-d
