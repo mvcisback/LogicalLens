@@ -63,9 +63,11 @@ in testing. To continue our example, let us test if the car's speed
 remains below some value `h` after time `tau`.
 
 ```python
-def slow_down_lens(h, tau):
-    tau *= 20
-    return lambda data: all(speed < h for t, speed in data if t >= tau)
+def slow_down_lens(data):
+    def spec(h, tau):
+        tau *= 20
+        return all(speed < h for t, speed in data if t >= tau)
+    return spec
 ```
 
 Since we require each parameter to be between `0` and `1`, we rescale
