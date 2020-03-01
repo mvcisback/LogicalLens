@@ -1,7 +1,7 @@
 attrs==19.3.0
 codecov==2.0.16
 funcy==1.14
-metric-temporal-logic==0.1.2
+metric-temporal-logic==0.1.4
 monotone-bipartition==0.2.0
 numpy==1.16.4
 pathos==0.2.3
