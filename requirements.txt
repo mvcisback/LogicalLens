@@ -1,5 +1,5 @@
 attrs==19.3.0
-codecov==2.0.15
+codecov==2.0.22
 funcy==1.12
 metric-temporal-logic==0.1.2
 monotone-bipartition==0.2.0
