@@ -4,7 +4,7 @@ funcy==1.14
 metric-temporal-logic==0.1.5
 monotone-bipartition==0.2.0
 numpy==1.18.2
-pathos==0.2.3
+pathos==0.2.5
 pytest==4.5.0
 pytest-cov==2.7.1
 pytest-flake8==1.0.4
